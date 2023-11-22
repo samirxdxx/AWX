@@ -1,0 +1,12 @@
+---
+- name: Trabajar con ficheros
+  hosts: all
+      
+  tasks:
+  - name: Crear un fichero vacío
+    file:
+      path: "/tmp/awx-prueba.txt"
+      state: "touch"
+
+
+...
