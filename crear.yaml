@@ -1,12 +1,13 @@
 ---
-- name: Trabajar con ficheros
-  hosts: all
-      
+- hosts: all
   tasks:
-  - name: Crear un fichero vacío
-    file:
-      path: "/tmp/awx-prueba.txt"
-      state: "touch"
+    - name: Hacer ping a 8.8.8.8
+      ping:
+        dest: 8.8.8.8
+        count: 10
+      register: ping_results
 
-
-...
+    - name: Guardar las primeras 10 líneas del ping en un log
+      copy:
+        content: "{{ ping_results.stdout | tail -n 10 }}"
+        dest: /tmp/ping.txt
