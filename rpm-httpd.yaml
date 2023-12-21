@@ -1,0 +1,22 @@
+---
+- name: Obtener información sobre httpd
+  hosts: redhat9
+  gather_facts: true
+  become: true
+
+  tasks:
+    - name: Verificar si httpd está instalado
+      shell: rpm -qa | grep -i httpd || echo "No tiene instalado httpd"
+      register: httpd_status
+
+    - name: Crear el directorio de informes si no existe
+      local_action:
+        module: file
+        path: "/ansible/reportes/apache/"
+        state: directory
+
+    - name: Crear informe en el servidor Ansible
+      local_action:
+        module: template
+        src: httpd_report.j2
+        dest: "/ansible/reportes/apache/ansible_httpd_report.txt"
