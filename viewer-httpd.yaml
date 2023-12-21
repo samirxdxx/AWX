@@ -25,4 +25,4 @@
           {{ hostvars[host]['httpd_status']['stdout'] | default('No está instalado httpd', true) }}
           **************************
           {% endfor %}
-        dest: "/ansible/reportes/httpd/informe.txt"
+        dest: "/ansible/reportes/apache/informe.txt"
