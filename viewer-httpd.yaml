@@ -1,0 +1,17 @@
+---
+- name: Obtener información sobre httpd
+  hosts: redhat9
+  gather_facts: true
+  become: true
+
+  tasks:
+    - name: Verificar si httpd está instalado
+      shell: rpm -qa | grep -i httpd || echo "No tiene instalado httpd"
+      register: httpd_status
+
+    - name: Imprimir resultados en pantalla
+      debug:
+        msg: |
+          Resultados de rpm -qa | grep -i httpd:
+          {{ httpd_status.stdout }}
+          **************************
