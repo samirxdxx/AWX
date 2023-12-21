@@ -1,6 +1,6 @@
 ---
 - name: Obtener información sobre httpd
-  hosts: redhat9
+  hosts: all
   gather_facts: true
   become: true
 
