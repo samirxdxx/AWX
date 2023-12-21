@@ -12,7 +12,7 @@
     - name: Crear el directorio de informes si no existe
       become: yes
       environment:
-        PATH: "/usr/bin:/bin:/usr/sbin:/sbin"  # Asegúrate de incluir la ruta correcta a sudo
+        PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       file:
         path: "/ansible/reportes/apache/"
         state: directory
