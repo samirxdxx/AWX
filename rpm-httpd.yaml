@@ -1,6 +1,6 @@
 ---
 - name: Obtener información sobre httpd
-  hosts: all
+  hosts: redhat9
   gather_facts: true
   become: true
 
@@ -10,8 +10,8 @@
       register: httpd_status
 
     - name: Crear el directorio de informes si no existe
-      local_action:
-        module: file
+      become: yes
+      file:
         path: "/ansible/reportes/apache/"
         state: directory
 
