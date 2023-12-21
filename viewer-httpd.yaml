@@ -9,9 +9,13 @@
       shell: rpm -qa | grep -i httpd || echo "No tiene instalado httpd"
       register: httpd_status
 
-    - name: Imprimir resultados en pantalla
+    - name: Imprimir resultados ordenados
       debug:
         msg: |
+          Resultados de rpm -qa | grep -i httpd ordenados:
+          {% for host in ansible_play_batch | sort(attribute='ansible_hostname') %}
+          Hostname: {{ host }} / IP Address: {{ hostvars[host]['ansible_host'] }}
           Resultados de rpm -qa | grep -i httpd:
-          {{ httpd_status.stdout }}
+          {{ hostvars[host]['httpd_status']['stdout'] }}
           **************************
+          {% endfor %}
