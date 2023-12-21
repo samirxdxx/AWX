@@ -9,20 +9,31 @@
       shell: rpm -qa | grep -i httpd || echo "No tiene instalado httpd"
       register: httpd_status
 
+    - name: Obtener información del sistema operativo
+      setup:
+      register: os_info
+
     - name: Crear el directorio de informes si no existe
       local_action:
         module: file
         path: "/ansible/reportes/httpd/"
         state: directory
 
+    - name: Obtener fecha y hora actual
+      command: date +"%Y-%m-%d %H:%M:%S"
+      register: current_date
+
     - name: Generar informe
       local_action:
         module: copy
         content: |
+          Fecha y hora: {{ current_date.stdout }}
           {% for host in play_hosts | sort %}
-          Hostname: {{ hostvars[host]['ansible_host'] }} / IP Address: {{ hostvars[host]['ansible_host'] }}
+          Hostname: {{ hostvars[host]['ansible_hostname'] }} / IP Address: {{ hostvars[host]['ansible_default_ipv4']['address'] }}
+          Distribución del sistema operativo: {{ hostvars[host]['os_info']['ansible_facts']['ansible_distribution'] }}
+          Versión del sistema operativo: {{ hostvars[host]['os_info']['ansible_facts']['ansible_distribution_version'] }}
           Resultados de rpm -qa | grep -i httpd:
-          {{ hostvars[host]['httpd_status']['stdout'] | default('No está instalado httpd', true) }}
+          {{ hostvars[host]['httpd_status']['stdout'] | default('No tiene instalado httpd', true) }}
           **************************
           {% endfor %}
-        dest: "/ansible/reportes/apache/informe.txt"
+        dest: "/ansible/reportes/httpd/informe.txt"
