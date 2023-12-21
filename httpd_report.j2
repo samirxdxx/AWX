@@ -1,0 +1,6 @@
+{% for host in ansible_play_batch %}
+Hostname: {{ host }} / IP Address: {{ hostvars[host]['ansible_host'] }}
+Resultado de rpm -qa | grep -i httpd:
+{{ hostvars[host]['httpd_status']['stdout'] }}
+****************************************************
+{% endfor %}
